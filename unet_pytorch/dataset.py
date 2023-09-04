@@ -21,7 +21,7 @@ class CarvanaDataset(Dataset):
     def __getitem__(self, index) -> torch.tensor:
         image_path = os.path.join(self.image_dir, self.images[index])
         mask_path = os.path.join(
-            self.mask_dir, self.images[index].rstrip(4) + "_mask.gif"
+            self.mask_dir, self.images[index].replace(".jpg", "_mask.gif")
         )
 
         image = np.array(Image.open(image_path).convert("RGB"))
