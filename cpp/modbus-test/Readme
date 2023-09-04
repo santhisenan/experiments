@@ -1,0 +1,6 @@
+Compiling code
+```
+g++-13 -Llibs/libmodbus/lib/ -Ilibs/libmodbus/include/modbus -lmodbus hello.cpp -o out/hello.o
+```
+
+Source: https://github.dev/ohopstad/modbus-server/blob/main/src/main.c
