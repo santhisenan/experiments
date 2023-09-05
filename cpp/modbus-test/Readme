@@ -1,6 +1,23 @@
 Compiling code
+---
+On MacOS
 ```
 g++-13 -Llibs/libmodbus/lib/ -Ilibs/libmodbus/include/modbus -lmodbus hello.cpp -o out/hello.o
 ```
 
+Compiling code in Linux (I dont know why it is different in Linux.)
+```
+g++-13 -Ilibs/libmodbus/include/modbus hello.cpp -o out/hello.o -lmodbus
+```
+
 Source: https://github.dev/ohopstad/modbus-server/blob/main/src/main.c
+
+
+TODO
+---
+
+[] Make the program use locally compiled libmodbus available in libs folder. It currently uses the globally installed version.
+
+[] Install docker: https://docs.docker.com/engine/install/ubuntu/
+
+[] [Checkout where to put external C++ libraries in Linux environment](https://stackoverflow.com/questions/3685716/where-do-i-put-third-party-libraries-to-set-up-a-c-linux-development-environme)

@@ -1,12 +1,13 @@
 #include <iostream>
 
-extern "C" {
+extern "C"
+{
 #include "modbus.h"
 }
-
 using namespace std;
 
-int main(void) {
+int main(void)
+{
     modbus_t *mb;
     uint16_t tab_reg[32];
 

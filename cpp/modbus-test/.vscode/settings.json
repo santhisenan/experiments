@@ -1,5 +1,5 @@
 {
-    "C_Cpp.default.compilerPath": "/opt/homebrew/bin/g++-13",
+    "C_Cpp.default.compilerPath": "/usr/bin/g++",
     "editor.formatOnSave": true,
     "files.associations": {
         "__bit_reference": "cpp",

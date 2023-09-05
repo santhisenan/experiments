@@ -11,7 +11,7 @@
 
 extern "C"
 {
-#include <libs/libmodbus/include/modbus/modbus.h>
+#include <modbus.h>
 }
 
 static pthread_mutex_t db_access = PTHREAD_MUTEX_INITIALIZER;
@@ -82,6 +82,7 @@ int FindClientName(int socket, char *name, int name_len)
 void *HandleConnection(modbus_t *arg)
 {
     modbus_t *client = arg;
+    // modbus_t *client = *static_cast<modbus_t *>(arg);
     int status = -1;
 
     char clientName[NI_MAXHOST];
@@ -139,7 +140,7 @@ void *HandleConnection(modbus_t *arg)
     }
 };
 
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
     struct options opt = ReadFlags(argc, argv);
 
@@ -200,7 +201,9 @@ main(int argc, char **argv)
             std::cerr << "Something went wrong. Error code: " << errno << "Error: " << modbus_strerror(errno) << std::endl;
         }
 
-        pthread_create(&thread, NULL, &HandleConnection, client);
+        pthread_create(&thread, NULL, &HandleConnection, (void *)client);
         pthread_detach(thread); // I hope the thread still gets stopped when main() exits...
     }
+
+    return 0;
 }
