@@ -11,7 +11,7 @@
 
 extern "C"
 {
-#include <modbus.h>
+#include "modbus.h"
 }
 
 static pthread_mutex_t db_access = PTHREAD_MUTEX_INITIALIZER;
@@ -79,10 +79,10 @@ int FindClientName(int socket, char *name, int name_len)
 }
 
 // Handling connections from clients in separate threads
-void *HandleConnection(modbus_t *arg)
+void *HandleConnection(void *arg)
 {
-    modbus_t *client = arg;
-    // modbus_t *client = *static_cast<modbus_t *>(arg);
+    // modbus_t *client = (modbus_t *)arg;
+    modbus_t *client = static_cast<modbus_t *>(arg);
     int status = -1;
 
     char clientName[NI_MAXHOST];
@@ -176,7 +176,7 @@ int main(int argc, char **argv)
     {
         int client_sock = -1;
         modbus_t *client = NULL;
-        pthread_t thread = NULL;
+        pthread_t thread = 0;
 
         switch (opt.type)
         {

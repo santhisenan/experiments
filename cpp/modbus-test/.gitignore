@@ -2,6 +2,7 @@
 libs/
 out/
 libmodbus-master
+.vscode
 
 # Prerequisites
 *.d
