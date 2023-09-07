@@ -33,3 +33,5 @@ checkpoint.pth.tar
 *.exe
 *.out
 *.app
+
+*.dSYM/**
