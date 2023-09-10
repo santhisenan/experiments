@@ -13,19 +13,37 @@ export default function Board() {
   // child components via props
   // null passed to useState is used as the initial value for the state var
   const [squares, setSquares] = useState(Array(9).fill(null))
+  const [xIsNext, setXIsNext] = useState(true);
+
+  const winner = calculateWinner(squares);
+  let status;
+  if (winner) {
+    status = "Winner: " + winner;
+  } else {
+    status = "Next Player: " + (xIsNext ? "X" : "O");
+  }
 
   function handleClick(i) {
+    if (squares[i] || calculateWinner(squares)) {
+      return;
+    }
     // Create a copy using slice array method
     const nextSquares = squares.slice();
-    nextSquares[i] = "X";
+    if (xIsNext) {
+      nextSquares[i] = "X";
+    } else {
+      nextSquares[i] = "O";
+    }
     // Calling setSquares function lets React know that the state of the
     // component has changed. This will trigger a re-render of the components
     // that use squares state as well as it's children
     setSquares(nextSquares);
+    setXIsNext(!xIsNext);
   }
   // return a JSX element
   return (
     <div>
+      <div className="status">{status}</div>
       <div className="board-row">
         {/* The function is not called in onSquareClick. The function is passed,
         which react will call by itself. If you call the function here, the
@@ -55,4 +73,25 @@ export default function Board() {
 // The Square component can be passed a prop called value
 function Square({value, onSquareClick}) {
   return <button className="square" onClick={onSquareClick}>{value}</button>
+}
+
+function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ];
+
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
 }
