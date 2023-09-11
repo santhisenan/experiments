@@ -1,7 +1,9 @@
 import "@radix-ui/themes/styles.css";
 
 import { Heading, Theme, Text } from "@radix-ui/themes";
-import ModbusConfigForm from "./ThemeTest";
+import ModbusConfigForm from "./ModbusConfigForm";
+
+// import "./styles.css";
 
 export default function HomePage() {
   return (
