@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import classnames from "classnames";
 
 import { Flex, Text, Grid, Tabs } from "@radix-ui/themes";
 import * as Form from "@radix-ui/react-form";
@@ -11,6 +10,8 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
 } from "@radix-ui/react-icons";
+
+// import "./select.css";
 
 export default function ModbusConfigForm() {
   return (
@@ -63,8 +64,10 @@ function ADAMForm() {
         </div>
         <Form.Control asChild>
           <Select.Root>
-            <Select.Trigger className="SelectTrigger" aria-label="Output Mode">
-              <Select.Value placeholder="Select Output Mode" />
+            <Select.Trigger>
+              <Select.Value placeholder="Select an output mode">
+                Select an output mode
+              </Select.Value>
               <Select.Icon className="SelectIcon">
                 <ChevronDownIcon />
               </Select.Icon>
@@ -74,12 +77,15 @@ function ADAMForm() {
                 <Select.ScrollUpButton className="SelectScrollButton">
                   <ChevronUpIcon />
                 </Select.ScrollUpButton>
+
                 <Select.Viewport className="SelectViewport">
-                  <Select.Item value="Hello">
-                    <Select.ItemText />
-                    <Select.ItemIndicator />
-                  </Select.Item>
+                  <Select.Item value="1">0 to 20 mA</Select.Item>
+                  <Select.Item value="2">4 to 20 mA</Select.Item>
+                  <Select.Item value="3">0 to 10 V</Select.Item>
                 </Select.Viewport>
+                <Select.ScrollDownButton className="SelectScrollButton">
+                  <ChevronDownIcon />
+                </Select.ScrollDownButton>
               </Select.Content>
             </Select.Portal>
           </Select.Root>
