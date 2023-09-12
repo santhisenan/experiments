@@ -2,8 +2,9 @@
 
 import React from "react";
 
-import { Flex, Text, Grid, Tabs } from "@radix-ui/themes";
+import { Flex, Text, Grid, Tabs, Button, Box } from "@radix-ui/themes";
 import * as Form from "@radix-ui/react-form";
+import { CheckCircledIcon } from "@radix-ui/react-icons";
 
 export default function ModbusConfigForm() {
   return (
@@ -179,12 +180,7 @@ function ADAMForm() {
           </select>
         </Form.Control>
       </Form.Field>
-
-      <Form.Submit asChild>
-        <button className="Button" style={{ marginTop: 10 }}>
-          Save changes
-        </button>
-      </Form.Submit>
+      <SubmitButton />
     </Form.Root>
   );
 }
@@ -240,11 +236,17 @@ function ModbusForm() {
         </Form.Control>
       </Form.Field>
 
-      <Form.Submit asChild>
-        <button className="Button" style={{ marginTop: 10 }}>
-          Save changes
-        </button>
-      </Form.Submit>
+      <SubmitButton />
     </Form.Root>
+  );
+}
+
+function SubmitButton() {
+  return (
+    <Box left="auto" right="auto" mt="3">
+      <Form.Submit asChild>
+        <Button variant="classic">Save changes</Button>
+      </Form.Submit>
+    </Box>
   );
 }
