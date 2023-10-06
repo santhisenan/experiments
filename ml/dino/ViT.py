@@ -110,7 +110,69 @@ class Loss(nn.Module):
     """The loss function.
 
     We subclass `nn.Module` since we want to create a buffer for the logits
-    center of the teacher.
+    center of the teacher. This vector is also called the center.
     """
 
-    def __init__(self, out_dim, teacher_temp=0.04, student_temp=0.1, center_momentum-0.9)
+    def __init__(
+        self,
+        out_dim,
+        teacher_temp=0.04,  # default temp of the teacher is lower than that of the student. Called sharpening
+        student_temp=0.1,
+        center_momentum=0.9,
+    ):
+        super().__init__()
+        self.student_temp = student_temp
+        self.teacher_temp = teacher_temp
+        self.center_momentum = center_momentum
+        self.register_buffer("center", torch.zeros(1, out_dim))
+
+    def forward(self, student_output, teacher_output):
+        student_temp = [s / self.student_temp for s in student_output]
+        # Since the teacher temp is lower than the student temp, it will
+        # sharpen the distribution of the teacher wrt student. The centering
+        # will bring the distribution closer to uniform dist. This
+        # counter-balance is really important for stability.
+        teacher_temp = [(t - self.center) / self.teacher_temp for t in teacher_output]
+
+        student_sm = [F.log_softmax(s, dim=-1) for s in student_temp]
+        # Using detach for teacher since the teacher network is not trained.
+        teacher_sm = [F.softmax(t, dim=-1).detach() for t in teacher_temp]
+
+        total_loss = 0
+        n_loss_terms = 0
+
+        for t_ix, t in enumerate(teacher_sm):
+            for s_ix, s in enumerate(student_sm):
+                if t_ix == s_ix:
+                    continue
+                # calculate cross-entropy for all the samples and then
+                # calculate the average.
+                loss = torch.sum(-t * s, dim=-1)
+                total_loss += loss.mean()
+                n_loss_terms += 1
+        total_loss /= n_loss_terms
+
+        self.update_center(teacher_output)
+
+        return total_loss
+
+    @torch.no_grad()
+    def update_center(self, teacher_output):
+        """Update the center used for teacher output.
+
+        Computer the exponential moving average.
+        """
+        batch_center = torch.cat(teacher_output).mean(dim=0, keepdim=True)
+        self.center = self.center * self.center_momentum + batch_center * (
+            1 - self.center_momentum
+        )
+
+
+def gradient_clip(model, clip=2.0):
+    for p in model.parameters():
+        if p.grad is not None:
+            param_norm = p.grad.data.norm()
+            clip_coef = clip / (param_norm + 1e-6)
+
+            if clip_coef < 1:
+                p.grad.data.mul_(clip_coef)

@@ -1,3 +1,5 @@
+scikit-learn
+timm
 torch
 torchvision
-timm
+tensorboard
