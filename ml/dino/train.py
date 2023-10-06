@@ -38,14 +38,19 @@ def main():
     parser.add_argument("--student-temp", type=float, default=0.1)
     parser.add_argument("--pretrained", action="store_true")
     parser.add_argument("-w", "--weight-decay", type=float, default=0.4)
+    parser.add_argument("-f", "--logging-freq", type=int, default=10)
 
     args = parser.parse_args()
     print(vars(args))
 
     # Parameters
-    vit_name, dim = ("vit_deit_small_patch16_224", 384)
-    path_dataset_train = pathlib.Path("data/imagenette2-320/train")
-    path_dataset_val = pathlib.Path("data/imagenette2-320/val")
+    vit_name, dim = ("beit_base_patch16_224", 384)
+    path_dataset_train = pathlib.Path(
+        "/Users/santhisenan/Documents/Datasets/imagenette2/train"
+    )
+    path_dataset_val = pathlib.Path(
+        "/Users/santhisenan/Documents/Datasets/imagenette2/val"
+    )
     path_labels = pathlib.Path("data/imagenette_labels.json")
 
     logging_path = pathlib.Path(args.tensorboard_dir)

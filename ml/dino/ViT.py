@@ -51,7 +51,7 @@ class Head(nn.Module):
         self.last_layer = nn.utils.weight_norm(
             nn.Linear(bottleneck_dim, out_dim, bias=False)
         )
-        self.last_layer.weight_g.data.fill(1)
+        self.last_layer.weight_g.data.fill_(1)
         if norm_last_layer:
             self.last_layer.weight_g.requires_grad = False
 
@@ -70,7 +70,7 @@ class Head(nn.Module):
         return x
 
 
-class MultiCropWrapper:
+class MultiCropWrapper(nn.Module):
     """Class for forward pass for multiple crops.
 
     Parameters
@@ -83,7 +83,7 @@ class MultiCropWrapper:
     def __init__(self, backbone, new_head):
         super().__init__()
 
-        backbone.head = nn.Identity  # deactivate the original head of backbone
+        backbone.head = nn.Identity()  # deactivate the original head of backbone
         self.backbone = backbone
         self.new_head = new_head
 
