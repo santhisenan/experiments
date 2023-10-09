@@ -20,7 +20,12 @@ const SearchManufacturer = ({
       ? manufacturers
       : manufacturers.filter((item) => {
           // item.toLowerCase().replace(/\s+\g, "").includes(query.toLowerCase().replace(/\s+/g, ""))
-          item.toLowerCase().replace(/\s+/g,"").includes(query.toLowerCase().replace(/\s+/g, ""));
+          item
+            .toLowerCase()
+            .replace(/\s+/g, "")
+            .includes(query.toLowerCase().replace(/\s+/g, ""));
+        });
+
   return (
     <div className="search-manufacturer">
       <Combobox>
@@ -42,16 +47,6 @@ const SearchManufacturer = ({
           </Combobox.Button>
         </div>
       </Combobox>
-
-      <Transition
-        as={Fragment}
-        leave="transition easi-in duration-100"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
-        afterLeave={() => setQuery("")}
-      >
-        <Combobox.Options></Combobox.Options>
-      </Transition>
     </div>
   );
 };
